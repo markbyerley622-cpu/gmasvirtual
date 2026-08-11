@@ -1,0 +1,298 @@
+@import "tailwindcss";
+
+@theme {
+  /* ---- Canvas ---- */
+  --color-void: #04060a;
+  --color-ink: #05070b;
+  --color-panel: #0a0e15;
+  --color-panel-2: #0e131c;
+  --color-line: rgba(255, 255, 255, 0.07);
+  --color-line-2: rgba(255, 255, 255, 0.12);
+
+  --color-fg: #f4f7fb;
+  --color-fg-dim: #aeb8c7;
+  --color-fg-mute: #6b7789;
+  --color-fg-faint: #454f5f;
+
+  /* ---- GBMS blue, sampled from the logo gradient ---- */
+  --color-slice-900: #0a2f8f;
+  --color-slice-700: #0a3fbb;
+  --color-slice-600: #0b4fe8;
+  --color-slice-500: #1f5cff;
+  --color-slice-400: #4b86ff;
+  --color-slice-300: #85b0ff;
+  --color-slice-200: #b8d0ff;
+
+  --color-cyan-glow: #00a6f5;
+
+  /* ---- Character yellow / crust ---- */
+  --color-crust: #ffd21e;
+  --color-crust-dim: #c9a410;
+  --color-crust-soft: #ffe27a;
+  --color-pepperoni: #ef4136;
+
+  --color-paper: #f5f6f8;
+
+  --font-sans: var(--font-inter), "SF Pro Display", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-mono-face), "SF Mono", ui-monospace, Menlo, monospace;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    background: var(--color-ink);
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    /* `clip`, not `hidden`: overflow-x:hidden makes the element a scroll
+       container, which silently breaks every position:sticky descendant. */
+    overflow-x: clip;
+  }
+
+  body {
+    background: var(--color-ink);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+    /* Inter's alternate glyphs — a subtle but real lift in refinement. */
+    font-feature-settings: "cv02", "cv03", "cv04", "ss01";
+  }
+
+  ::selection {
+    background: var(--color-crust);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-crust);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  /* The nav is fixed, so anchor targets must clear it. */
+  section[id],
+  main[id] {
+    scroll-margin-top: 5.5rem;
+  }
+}
+
+@layer utilities {
+  /* ---- Type -------------------------------------------------------------
+     Weight 600 with tight tracking is what reads as premium product rather
+     than poster. Line-height sits just under 1; below that, descenders on
+     y/g/p clip against the line box, hence the padding-bottom. */
+  .display {
+    letter-spacing: -0.04em;
+    line-height: 1;
+    font-weight: 600;
+    text-wrap: balance;
+    padding-bottom: 0.06em;
+  }
+
+  .display-tight {
+    letter-spacing: -0.045em;
+    line-height: 0.96;
+    font-weight: 600;
+    text-wrap: balance;
+    padding-bottom: 0.06em;
+  }
+
+  .type-hero {
+    font-size: clamp(2.5rem, 5.9vw, 4.6rem);
+  }
+  .type-section {
+    font-size: clamp(2.1rem, 5.2vw, 4rem);
+  }
+  .type-sub {
+    font-size: clamp(1.5rem, 3vw, 2.35rem);
+  }
+
+  .eyebrow {
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    font-family: var(--font-mono);
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.035em;
+  }
+
+  .copy-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Vertical fade on display type — the keynote look. */
+  /* Stops short of a full fade: across a three-line headline an aggressive
+     ramp leaves the last line looking disabled rather than styled. */
+  .text-gradient {
+    background: linear-gradient(
+      180deg,
+      var(--color-fg) 0%,
+      var(--color-fg) 30%,
+      rgba(244, 247, 251, 0.74) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-crust {
+    background: linear-gradient(180deg, #ffe27a 0%, var(--color-crust) 55%, #e5a800 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* ---- Surfaces ---------------------------------------------------------
+     One panel treatment across the whole site so every card reads as the
+     same material. */
+  .surface {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.035) 0%,
+      rgba(255, 255, 255, 0.012) 100%
+    );
+    border: 1px solid var(--color-line);
+    backdrop-filter: blur(12px);
+  }
+
+  .surface-solid {
+    background: linear-gradient(180deg, #0c111a 0%, #080c13 100%);
+    border: 1px solid var(--color-line);
+  }
+
+  .surface-lift {
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+      0 24px 60px -24px rgba(0, 0, 0, 0.9);
+  }
+
+  .glow-slice {
+    box-shadow:
+      0 0 0 1px rgba(31, 92, 255, 0.28),
+      0 0 44px -8px rgba(31, 92, 255, 0.5);
+  }
+
+  .glow-crust {
+    box-shadow:
+      0 0 0 1px rgba(255, 210, 30, 0.25),
+      0 0 44px -10px rgba(255, 210, 30, 0.35);
+  }
+
+  .rule {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--color-line-2) 12%,
+      var(--color-line-2) 88%,
+      transparent
+    );
+  }
+
+  .shell {
+    width: 100%;
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .shell {
+      padding-inline: 2rem;
+    }
+  }
+
+  /* The character art ships on pure black; `screen` drops that backdrop over
+     any dark surface. Only works when no ancestor creates a stacking context
+     (a transform or opacity < 1 isolates the blend) — the mask feathers the
+     frame edge as a fallback. */
+  .knockout-black {
+    mix-blend-mode: screen;
+    -webkit-mask-image: radial-gradient(ellipse 74% 74% at 50% 46%, #000 60%, transparent 100%);
+    mask-image: radial-gradient(ellipse 74% 74% at 50% 46%, #000 60%, transparent 100%);
+  }
+
+  /* Promote animated layers to their own compositor layer so motion stays at
+     display refresh rate instead of repainting on every frame. */
+  .gpu {
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+  }
+
+  .flow-dash {
+    background-image: linear-gradient(
+      90deg,
+      var(--color-slice-400) 0 6px,
+      transparent 6px 14px
+    );
+    background-size: 14px 100%;
+    animation: dash-move 0.9s linear infinite;
+    opacity: 0.55;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes sweep {
+  from {
+    transform: translateX(-120%);
+  }
+  to {
+    transform: translateX(320%);
+  }
+}
+
+/* Travelling dashes for the ecosystem flow diagram. */
+@keyframes dash-move {
+  to {
+    background-position: 14px 0;
+  }
+}
+
+@keyframes flow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
